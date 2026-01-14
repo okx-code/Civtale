@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group = 'sh.okx.civtale'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly files(file("server/HytaleServer.jar"))
+}
+
+task hytale(type: org.gradle.jvm.tasks.Jar) {
+    from sourceSets.main.runtimeClasspath
+    destinationDirectory = file("./server/mods/")
+    archiveFileName = "Civtale-1.0-SNAPSHOT.jar"
+}

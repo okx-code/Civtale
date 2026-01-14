@@ -1,0 +1,12 @@
+{
+  "Group": "CivMC",
+  "Name": "Civtale",
+  "Version": "1.0.0",
+  "Authors": [
+    {
+      "Name": "Okx"
+    }
+  ],
+  "Main": "sh.okx.civtale.Civtale",
+  "ServerVersion": "*"
+}
