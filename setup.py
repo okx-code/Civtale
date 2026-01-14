@@ -57,6 +57,7 @@ if hytale_server is None:
     exit(1)
 
 print("Extracting files...")
+os.mkdir(ext)
 with zipfile.ZipFile(hytale_server, 'r') as zip_ref:
     zip_ref.extractall(ext)
 
