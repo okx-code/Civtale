@@ -84,9 +84,9 @@ with urllib.request.urlopen(req) as response, open("temp/fernflower.zip", "wb") 
 with zipfile.ZipFile("temp/fernflower.zip", 'r') as zip_ref:
     zip_ref.extractall("fernflower")
 if is_linux:
-    subprocess.run([(Path("fernflower") / "gradlew").absolute(), "build"], check=True, cwd="fernflower")
+    subprocess.run([(Path("fernflower") / "fernflower-master" / "gradlew").absolute(), "build"], check=True, cwd="fernflower")
 else:
-    subprocess.run([(Path("fernflower") / "gradlew.bat").absolute(), "build"], check=True, cwd="fernflower")
+    subprocess.run([(Path("fernflower") / "fernflower-master" / "gradlew.bat").absolute(), "build"], check=True, cwd="fernflower")
 try:
     shutil.rmtree("sources")
 except FileNotFoundError:
