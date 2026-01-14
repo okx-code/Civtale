@@ -6,8 +6,8 @@ build/
 .kotlin
 .idea
 HytaleServer.jar
-server
-source
+server/
+sources/
 *.iml
 temp/
 fernflower/
