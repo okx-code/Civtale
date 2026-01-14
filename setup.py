@@ -77,6 +77,7 @@ try:
     shutil.rmtree("fernflower")
 except FileNotFoundError:
     pass
+os.mkdir("fernflower")
 subprocess.run(["git", "clone", "--depth", "1", "git@github.com:JetBrains/fernflower.git", "fernflower"], check=True)
 if is_linux:
     subprocess.run([(Path("fernflower") / "gradlew").absolute(), "build"], check=True, cwd="fernflower")
