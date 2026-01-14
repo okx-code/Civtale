@@ -78,7 +78,11 @@ try:
 except FileNotFoundError:
     pass
 os.mkdir("fernflower")
-subprocess.run(["git", "clone", "--depth", "1", "git@github.com:JetBrains/fernflower.git", "fernflower"], check=True)
+req = urllib.request.Request("https://github.com/JetBrains/fernflower/archive/refs/heads/master.zip", headers={"User-Agent": "civ"})
+with urllib.request.urlopen(req) as response, open("temp/fernflower.zip", "wb") as f:
+    f.write(response.read())
+with zipfile.ZipFile("temp/fernflower.zip", 'r') as zip_ref:
+    zip_ref.extractall("fernflower")
 if is_linux:
     subprocess.run([(Path("fernflower") / "gradlew").absolute(), "build"], check=True, cwd="fernflower")
 else:
