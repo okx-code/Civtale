@@ -7,6 +7,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
+import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.modules.blockhealth.BlockHealthChunk;
@@ -14,13 +15,21 @@ import com.hypixel.hytale.server.core.modules.blockhealth.BlockHealthModule;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import sh.okx.civtale.database.store.ChunkPositionDatabaseStore;
+import sh.okx.civtale.reinforcement.Reinforcement;
+import sh.okx.civtale.structure.BlockPos;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BreakHandler extends EntityEventSystem<EntityStore, BreakBlockEvent> {
-    protected BreakHandler() {
+    private final ChunkPositionDatabaseStore<Reinforcement> reinforcementStore;
+    private final HytaleLogger logger;
+
+    protected BreakHandler(ChunkPositionDatabaseStore<Reinforcement> reinforcementStore, HytaleLogger logger) {
         super(BreakBlockEvent.class);
+        this.reinforcementStore = reinforcementStore;
+        this.logger = logger;
     }
 
     @Nullable
@@ -31,14 +40,17 @@ public class BreakHandler extends EntityEventSystem<EntityStore, BreakBlockEvent
 
     @Override
     public void handle(int index, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull BreakBlockEvent event) {
-        Ref<EntityStore> ref = archetypeChunk.getReferenceTo(index);
-        System.out.println("break " + event.getBlockType().getId());
-        if (true) {
-            return;
-        }
-        event.setCancelled(true);
 
         World world = commandBuffer.getExternalData().getWorld();
+
+        Reinforcement reinforcement = reinforcementStore.get(world.getName(), BlockPos.fromVec(event.getTargetBlock()));
+        if (reinforcement == null) {
+            return;
+        }
+
+        event.setCancelled(true);
+        logger.atInfo().log("Reinforcement: " + reinforcement);
+
         ChunkStore chunkStore = world.getChunkStore();
         Store<ChunkStore> chunkStoreStore = chunkStore.getStore();
         long chunkIndex = ChunkUtil.indexChunkFromBlock(event.getTargetBlock().x, event.getTargetBlock().z);
