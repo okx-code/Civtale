@@ -4,13 +4,11 @@ import com.hypixel.hytale.component.ComponentRegistryProxy;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.math.util.ChunkUtil;
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.events.ChunkPreLoadProcessEvent;
 import com.hypixel.hytale.server.core.universe.world.events.StartWorldEvent;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import sh.okx.civtale.database.Database;
-import sh.okx.civtale.reinforcement.WorldUnloadHandler;
 import sh.okx.civtale.structure.BlockPos;
 import sh.okx.civtale.structure.ChunkPos;
 
