@@ -15,7 +15,7 @@ public class ReinforcementStoreable implements DatabasePositionStoreable<Reinfor
         Migrator migrator = new Migrator();
 
         migrator.registerMigration("reinforcements", 1, """
-            CREATE TABLE reinforcements (world TEXT NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, type TEXT NOT NULL, health DOUBLE NOT NULL, created TIMESTAMP NOT NULL, UNIQUE (world, x, y, z))
+            CREATE TABLE reinforcements (world TEXT NOT NULL, x INT NOT NULL, y INT NOT NULL, z INT NOT NULL, type TEXT NOT NULL, health REAL NOT NULL, group INT NOT NULL, created TIMESTAMP NOT NULL, UNIQUE (world, x, y, z))
             """, """
             CREATE INDEX reinforcement_chunk ON reinforcements (world, x >> 5, z >> 5)
             """);
@@ -26,8 +26,8 @@ public class ReinforcementStoreable implements DatabasePositionStoreable<Reinfor
     @Override
     public String replaceStatement(String table) {
         return """
-            INSERT INTO %s (world, x, y, z, type, health, created)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO %s (world, x, y, z, type, health, group, created)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(world, x, y, z) DO UPDATE SET
                 world = excluded.world,
                 x = excluded.x,
@@ -35,6 +35,7 @@ public class ReinforcementStoreable implements DatabasePositionStoreable<Reinfor
                 z = excluded.z,
                 type = excluded.type,
                 health = excluded.health,
+                group = excluded.group,
                 created = excluded.created""".formatted(table);
     }
 
@@ -45,10 +46,11 @@ public class ReinforcementStoreable implements DatabasePositionStoreable<Reinfor
         int y = resultSet.getInt("y");
         int z = resultSet.getInt("z");
         String type = resultSet.getString("type");
-        double health = resultSet.getDouble("health");
+        float health = resultSet.getFloat("health");
+        int group = resultSet.getInt("group");
         long created = resultSet.getTimestamp("created").getTime();
 
-        return new Reinforcement(world, x, y, z, type, health, created);
+        return new Reinforcement(world, x, y, z, type, health, group, created);
     }
 
     @Override
@@ -58,7 +60,8 @@ public class ReinforcementStoreable implements DatabasePositionStoreable<Reinfor
         statement.setInt(3, value.y());
         statement.setInt(4, value.z());
         statement.setString(5, value.type());
-        statement.setDouble(6, value.health());
-        statement.setTimestamp(7, new Timestamp(value.created()));
+        statement.setFloat(6, value.health());
+        statement.setInt(7, value.group());
+        statement.setTimestamp(8, new Timestamp(value.created()));
     }
 }

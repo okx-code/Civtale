@@ -1,4 +1,4 @@
-package sh.okx.civtale;
+package sh.okx.civtale.reinforcement;
 
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -17,7 +17,6 @@ import com.hypixel.hytale.server.core.universe.world.ParticleUtil;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import sh.okx.civtale.database.store.ChunkPositionDatabaseStore;
-import sh.okx.civtale.reinforcement.Reinforcement;
 import sh.okx.civtale.structure.BlockPos;
 
 import javax.annotation.Nonnull;
@@ -27,7 +26,7 @@ import java.time.Instant;
 public class ReinforceHandler extends EntityEventSystem<EntityStore, DamageBlockEvent> {
     private final ChunkPositionDatabaseStore<Reinforcement> reinforcementStore;
 
-    protected ReinforceHandler(ChunkPositionDatabaseStore<Reinforcement> reinforcementStore) {
+    public ReinforceHandler(ChunkPositionDatabaseStore<Reinforcement> reinforcementStore) {
         super(DamageBlockEvent.class);
         this.reinforcementStore = reinforcementStore;
     }
@@ -59,7 +58,7 @@ public class ReinforceHandler extends EntityEventSystem<EntityStore, DamageBlock
         ParticleUtil.spawnParticleEffect("GreenOrbImpact", target.toVector3d().add(0.5, 0.5, 0.5), store);
 
         inventory.getHotbar().setItemStackForSlot(inventory.getActiveHotbarSlot(), item.withQuantity(item.getQuantity() - 1));
-        reinforcementStore.add(new Reinforcement(world.getName(), target.x, target.y, target.z, "stone", 1, Instant.now().toEpochMilli()));
+        reinforcementStore.add(new Reinforcement(world.getName(), target.x, target.y, target.z, "stone", 1, 0, Instant.now().toEpochMilli()));
         player.sendMessage(Message.translation("server.general.reinforcement.reinforcedBasic").color("#55ff55"));
         event.setCancelled(true);
     }

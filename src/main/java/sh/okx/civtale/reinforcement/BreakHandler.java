@@ -1,4 +1,4 @@
-package sh.okx.civtale;
+package sh.okx.civtale.reinforcement;
 
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -16,7 +16,6 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import sh.okx.civtale.database.store.ChunkPositionDatabaseStore;
-import sh.okx.civtale.reinforcement.Reinforcement;
 import sh.okx.civtale.structure.BlockPos;
 
 import javax.annotation.Nonnull;
@@ -26,7 +25,7 @@ public class BreakHandler extends EntityEventSystem<EntityStore, BreakBlockEvent
     private final ChunkPositionDatabaseStore<Reinforcement> reinforcementStore;
     private final HytaleLogger logger;
 
-    protected BreakHandler(ChunkPositionDatabaseStore<Reinforcement> reinforcementStore, HytaleLogger logger) {
+    public BreakHandler(ChunkPositionDatabaseStore<Reinforcement> reinforcementStore, HytaleLogger logger) {
         super(BreakBlockEvent.class);
         this.reinforcementStore = reinforcementStore;
         this.logger = logger;
