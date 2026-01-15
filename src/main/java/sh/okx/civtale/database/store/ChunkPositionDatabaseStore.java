@@ -169,8 +169,6 @@ public class ChunkPositionDatabaseStore<T extends PositionStoreable> {
         }
         EXECUTOR.execute(() -> {
             try {
-                // TODO process the database record into a list of statements which can then be applied sequentially
-                // As if this errors right now we could end up in a corrupt state
                 try (PreparedStatement deleteStatement = database.getConnection().prepareStatement("DELETE FROM " + table + " WHERE world = ? AND x = ? AND y = ? AND z = ?");
                      PreparedStatement updateReinforcement = database.getConnection().prepareStatement(this.databasePositionStoreable.replaceStatement(table))) {
 
