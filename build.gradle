@@ -22,7 +22,6 @@ task hytale(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
     archiveFileName = "Civtale-1.0-SNAPSHOT.jar"
 }
 
-
 idea {
     module {
         generatedSourceDirs += "source"

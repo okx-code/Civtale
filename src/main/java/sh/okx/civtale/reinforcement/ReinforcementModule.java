@@ -4,10 +4,11 @@ import com.hypixel.hytale.component.ComponentRegistryProxy;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import sh.okx.civtale.CivModule;
 import sh.okx.civtale.database.Database;
 import sh.okx.civtale.database.store.ChunkPositionDatabaseStore;
 
-public class ReinforcementModule {
+public class ReinforcementModule implements CivModule {
     private static final HytaleLogger LOGGER = HytaleLogger.get("Civtale").getSubLogger("Reinforcement");
 
     private final Database database;
@@ -25,5 +26,11 @@ public class ReinforcementModule {
         ComponentRegistryProxy<EntityStore> registry = plugin.getEntityStoreRegistry();
         registry.registerSystem(new BreakHandler(store, LOGGER));
         registry.registerSystem(new ReinforceHandler(store));
+    }
+
+    public void start() {
+    }
+
+    public void shutdown() {
     }
 }

@@ -8,10 +8,15 @@ import sh.okx.civtale.reinforcement.ReinforcementModule;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 public class Civtale extends JavaPlugin {
+    private ArrayList<CivModule> modules;
+
     public Civtale(@Nonnull JavaPluginInit init) {
         super(init);
+
+        this.modules = new ArrayList<>();
     }
 
     @Override
@@ -22,12 +27,27 @@ public class Civtale extends JavaPlugin {
         storage.toFile().mkdir();
         Database database = new Database(storage);
 
-        new ReinforcementModule(database, this).init();
+        ReinforcementModule reinforcement = new ReinforcementModule(database, this);
+        reinforcement.init();
+        this.modules.add(reinforcement);
 
         getEventRegistry().register(RemoveWorldEvent.class, "default", new WorldUnloadHandler(getLogger()));
+        super.setup();
     }
 
     @Override
     protected void start() {
+        for (CivModule module : modules) {
+            module.start();
+        }
+        super.start();
+    }
+
+    @Override
+    protected void shutdown() {
+        for (CivModule module : modules) {
+            module.shutdown();
+        }
+        super.shutdown();
     }
 }
