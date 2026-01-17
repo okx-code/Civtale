@@ -3,7 +3,7 @@ package sh.okx.civtale;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.events.RemoveWorldEvent;
-import sh.okx.civtale.ban.BanModule;
+import sh.okx.civtale.moderation.ModerationModule;
 import sh.okx.civtale.database.Database;
 import sh.okx.civtale.reinforcement.ReinforcementModule;
 import java.util.logging.Level;
@@ -35,9 +35,9 @@ public class Civtale extends JavaPlugin {
         reinforcementModule.setup();
         this.modules.add(reinforcementModule);
 
-        BanModule banModule = new BanModule(database, this);
-        banModule.setup();
-        this.modules.add(banModule);
+        ModerationModule moderationModule = new ModerationModule(database, this);
+        moderationModule.setup();
+        this.modules.add(moderationModule);
 
         getEventRegistry().register(RemoveWorldEvent.class, "default", new WorldUnloadHandler(getLogger()));
         super.setup();
