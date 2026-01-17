@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerSetupConnectEven
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import sh.okx.civtale.CivModule;
 import sh.okx.civtale.database.Database;
+import sh.okx.civtale.moderation.commands.BanCommand;
 
 import java.util.HashSet;
 import java.util.Set;

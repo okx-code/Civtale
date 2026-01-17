@@ -6,6 +6,8 @@ import com.hypixel.hytale.server.core.universe.world.events.RemoveWorldEvent;
 import sh.okx.civtale.moderation.ModerationModule;
 import sh.okx.civtale.database.Database;
 import sh.okx.civtale.reinforcement.ReinforcementModule;
+
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
@@ -14,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Civtale extends JavaPlugin {
-    private ArrayList<CivModule> modules;
+    private List<CivModule> modules;
     private Database database;
 
     public Civtale(@Nonnull JavaPluginInit init) {
@@ -40,7 +42,6 @@ public class Civtale extends JavaPlugin {
         this.modules.add(moderationModule);
 
         getEventRegistry().register(RemoveWorldEvent.class, "default", new WorldUnloadHandler(getLogger()));
-        super.setup();
     }
 
     @Override
@@ -48,7 +49,6 @@ public class Civtale extends JavaPlugin {
         for (CivModule module : modules) {
             module.start();
         }
-        super.start();
     }
 
     @Override
@@ -61,6 +61,5 @@ public class Civtale extends JavaPlugin {
         } catch (SQLException e) {
             getLogger().at(Level.SEVERE).log("Failed to close database connection", e);
         }
-        super.shutdown();
     }
 }

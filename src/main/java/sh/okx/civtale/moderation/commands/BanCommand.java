@@ -1,4 +1,4 @@
-package sh.okx.civtale.moderation;
+package sh.okx.civtale.moderation.commands;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredAr
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import sh.okx.civtale.moderation.ModerationModule;
 
 import javax.annotation.Nonnull;
 
