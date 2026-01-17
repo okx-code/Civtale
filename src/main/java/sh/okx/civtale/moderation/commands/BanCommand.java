@@ -11,7 +11,7 @@ import sh.okx.civtale.moderation.ModerationModule;
 import javax.annotation.Nonnull;
 
 public class BanCommand extends CommandBase {
-    private @Nonnull static final Message MESSAGE_COMMANDS_BAN_SUCCESS = Message.translation("civ.commands.ban.success");
+    private @Nonnull static final Message MESSAGE_COMMANDS_BAN_SUCCESS = Message.translation("civ.command.ban.success");
 
     private @Nonnull final ModerationModule moderationModule;
     private @Nonnull final RequiredArg<PlayerRef> playerArg;

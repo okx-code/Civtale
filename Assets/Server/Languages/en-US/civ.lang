@@ -11,4 +11,4 @@ moderation.ban.kickReason = You have been banned from the server.
 
 command.ban.name=ban
 command.ban.description=Ban a player from the server.
-commands.ban.success=Player {username} ({uuid}) has been banned.
+command.ban.success=Player {username} ({uuid}) has been banned.
