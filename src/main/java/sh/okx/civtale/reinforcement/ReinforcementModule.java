@@ -19,7 +19,7 @@ public class ReinforcementModule implements CivModule {
         this.plugin = plugin;
     }
 
-    public void init() {
+    public void setup() {
         ChunkPositionDatabaseStore<Reinforcement> store = new ChunkPositionDatabaseStore<>(LOGGER, database, new ReinforcementStoreable(), "reinforcements");
         store.setup(plugin.getEntityStoreRegistry(), plugin.getEventRegistry());
 

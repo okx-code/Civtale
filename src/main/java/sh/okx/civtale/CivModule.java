@@ -2,9 +2,9 @@ package sh.okx.civtale;
 
 public interface CivModule {
     /**
-     * Initialize the module.
+     * Setup the module.
      */
-    void init();
+    void setup();
 
     /**
      * Start the module.

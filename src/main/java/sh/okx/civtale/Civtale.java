@@ -3,15 +3,19 @@ package sh.okx.civtale;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.events.RemoveWorldEvent;
+import sh.okx.civtale.ban.BanModule;
 import sh.okx.civtale.database.Database;
 import sh.okx.civtale.reinforcement.ReinforcementModule;
+import java.util.logging.Level;
 
 import javax.annotation.Nonnull;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Civtale extends JavaPlugin {
     private ArrayList<CivModule> modules;
+    private Database database;
 
     public Civtale(@Nonnull JavaPluginInit init) {
         super(init);
@@ -25,11 +29,15 @@ public class Civtale extends JavaPlugin {
         civtaleFolder.toFile().mkdir();
         Path storage = civtaleFolder.resolve("storage");
         storage.toFile().mkdir();
-        Database database = new Database(storage);
+        this.database = new Database(storage);
 
-        ReinforcementModule reinforcement = new ReinforcementModule(database, this);
-        reinforcement.init();
-        this.modules.add(reinforcement);
+        ReinforcementModule reinforcementModule = new ReinforcementModule(database, this);
+        reinforcementModule.setup();
+        this.modules.add(reinforcementModule);
+
+        BanModule banModule = new BanModule(database, this);
+        banModule.setup();
+        this.modules.add(banModule);
 
         getEventRegistry().register(RemoveWorldEvent.class, "default", new WorldUnloadHandler(getLogger()));
         super.setup();
@@ -47,6 +55,11 @@ public class Civtale extends JavaPlugin {
     protected void shutdown() {
         for (CivModule module : modules) {
             module.shutdown();
+        }
+        try {
+            this.database.getConnection().close();
+        } catch (SQLException e) {
+            getLogger().at(Level.SEVERE).log("Failed to close database connection", e);
         }
         super.shutdown();
     }
