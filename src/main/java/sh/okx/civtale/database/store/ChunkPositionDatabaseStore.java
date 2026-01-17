@@ -104,8 +104,7 @@ public class ChunkPositionDatabaseStore<T extends PositionStoreable> {
         }
         DatabaseRecord<T> oldValue = map.computeIfPresent(pos, (k, current) -> {
             if (current.state() == DatabaseRecord.RecordState.DELETED || current.state() == DatabaseRecord.RecordState.DELETED_UNCONFIRMED) {
-                // do nothing
-                return current;
+                throw new IllegalStateException("cannot delete value that does not exist at position " + world + " @ " + pos);
             } else if (current.state() == DatabaseRecord.RecordState.NEW) {
                 return null;
             } else if (current.state() == DatabaseRecord.RecordState.UNMODIFIED || current.state() == DatabaseRecord.RecordState.MODIFIED || current.state() == DatabaseRecord.RecordState.UPDATED_UNCONFIRMED) {
@@ -119,23 +118,21 @@ public class ChunkPositionDatabaseStore<T extends PositionStoreable> {
         }
     }
 
-    public synchronized void loadChunk(ChunkPos chunk) {
-        synchronized (database) {
-            try (PreparedStatement statement = database.getConnection().prepareStatement("SELECT * FROM %s WHERE x >> 5 = ? AND z >> 5 = ? AND world = ?".formatted(table))) {
-                statement.setInt(1, chunk.x());
-                statement.setInt(2, chunk.z());
-                statement.setString(3, chunk.world());
-                ResultSet resultSet = statement.executeQuery();
+    public void loadChunk(ChunkPos chunk) {
+        try (PreparedStatement statement = database.getConnection().prepareStatement("SELECT * FROM %s WHERE x >> 5 = ? AND z >> 5 = ? AND world = ?".formatted(table))) {
+            statement.setInt(1, chunk.x());
+            statement.setInt(2, chunk.z());
+            statement.setString(3, chunk.world());
+            ResultSet resultSet = statement.executeQuery();
 
-                TreeMap<BlockPos, DatabaseRecord<T>> map = new TreeMap<>();
-                while (resultSet.next()) {
-                    T value = this.databasePositionStoreable.deserialize(resultSet);
-                    map.put(value.blockPos(), new DatabaseRecord<>(DatabaseRecord.RecordState.UNMODIFIED, value));
-                }
-                byChunk.put(chunk, map);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            TreeMap<BlockPos, DatabaseRecord<T>> map = new TreeMap<>();
+            while (resultSet.next()) {
+                T value = this.databasePositionStoreable.deserialize(resultSet);
+                map.put(value.blockPos(), new DatabaseRecord<>(DatabaseRecord.RecordState.UNMODIFIED, value));
             }
+            byChunk.put(chunk, map);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -172,8 +169,6 @@ public class ChunkPositionDatabaseStore<T extends PositionStoreable> {
         }
         EXECUTOR.execute(() -> {
             try {
-                // TODO process the database record into a list of statements which can then be applied sequentially
-                // As if this errors right now we could end up in a corrupt state
                 try (PreparedStatement deleteStatement = database.getConnection().prepareStatement("DELETE FROM " + table + " WHERE world = ? AND x = ? AND y = ? AND z = ?");
                      PreparedStatement updateReinforcement = database.getConnection().prepareStatement(this.databasePositionStoreable.replaceStatement(table))) {
 
