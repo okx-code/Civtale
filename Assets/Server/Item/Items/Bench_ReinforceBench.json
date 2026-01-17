@@ -1,7 +1,7 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Bench_ReinforceBench.name",
-    "Description": "server.items.Bench_ReinforceBench.description"
+    "Name": "civ.items.Bench_ReinforceBench.name",
+    "Description": "civ.items.Bench_ReinforceBench.description"
   },
   "Recipe": {
     "Input": [
@@ -47,7 +47,7 @@
         {
           "Id": "ReinforceBench_Reinforcements",
           "Icon": "Icons/CraftingCategories/Workbench/WeaponsCrude.png",
-          "Name": "server.benchCategories.reinforcebench.reinforcements"
+          "Name": "civ.benchCategories.reinforcebench.reinforcements"
         }
       ],
       "LocalOpenSoundEventId": "SFX_Workbench_Open",

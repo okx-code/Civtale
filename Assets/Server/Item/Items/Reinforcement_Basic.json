@@ -1,6 +1,6 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Reinforcement_Basic.name"
+    "Name": "civ.items.Reinforcement_Basic.name"
   },
   "ItemLevel": 15,
   "MaxStack": 100,

@@ -51,7 +51,7 @@ public class ReinforceHandler extends EntityEventSystem<EntityStore, DamageBlock
         World world = commandBuffer.getExternalData().getWorld();
 
         if (reinforcementStore.get(world.getName(), BlockPos.fromVec(target)) != null) {
-            player.sendMessage(Message.translation("server.general.reinforcement.alreadyReinforced").color("#ff5555"));
+            player.sendMessage(Message.translation("civ.general.reinforcement.alreadyReinforced").color("#ff5555"));
             return;
         }
 
@@ -59,7 +59,7 @@ public class ReinforceHandler extends EntityEventSystem<EntityStore, DamageBlock
 
         inventory.getHotbar().setItemStackForSlot(inventory.getActiveHotbarSlot(), item.withQuantity(item.getQuantity() - 1));
         reinforcementStore.add(new Reinforcement(world.getName(), target.x, target.y, target.z, "stone", 1, 0, Instant.now().toEpochMilli()));
-        player.sendMessage(Message.translation("server.general.reinforcement.reinforcedBasic").color("#55ff55"));
+        player.sendMessage(Message.translation("civ.general.reinforcement.reinforcedBasic").color("#55ff55"));
         event.setCancelled(true);
     }
 }
