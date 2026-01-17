@@ -6,7 +6,7 @@ build/
 .kotlin
 .idea
 HytaleServer.jar
-server/
+run/
 sources/
 *.iml
 temp/

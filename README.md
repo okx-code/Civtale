@@ -1,20 +1,13 @@
 # Getting started
 
-To setup the development environment, you need either Windows or Linux, as well as Python and Java 21+ installed.
+To setup the development environment, you need either Windows or Linux, and Java 25+ installed.
 
-Run `python3 setup.py` to download the Hytale jar, setup a server, and decompile it.
+Run `./gradlew.bat downloadServer` to download the Hytale jar and prepare the server. You will need to authenticate during this, so watch for the link
 
-You wil find it will put a server in the `server` folder, and sources in the `source` folder. If you are using IntelliJ, mark `source` as "Generated Sources Root", and then attach it as a source to the hytale jar (click "Attach Sources" when viewing a decompiled class)
+You wil find it will put a server jar and assets in the `run` folder.
 
-To run Hytale in debugging mode, it's recommended to make a configuration in IntelliJ like so:
+To run Hytale, use `./gradlew.bat runServer`.
 
-![rungd](wiki/rungd.png)
-![rungd](wiki/runhy.png)
+If you run into an error with the AOTCache, make sure you are using Adoptium as recommended by Hytale
 
-Recommended arguments for running the jar:
-
-```
---assets Assets.zip --assets ../Assets --disable-sentry --allow-op
-```
-
-Running the jar application in debug mode will compile the plugin and run the server.
+Running gradle in debug mode will open the debugger on port 5005
