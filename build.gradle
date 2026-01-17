@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id 'java'
     id 'com.gradleup.shadow' version '8.3.9'
@@ -16,12 +18,11 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.49.1.0")
 }
 
-task hytale(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+tasks.register('hytale', ShadowJar) {
     from sourceSets.main.runtimeClasspath
     destinationDirectory = file("./server/mods/")
     archiveFileName = "Civtale-1.0-SNAPSHOT.jar"
 }
-
 
 idea {
     module {
