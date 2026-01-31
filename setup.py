@@ -94,8 +94,20 @@ try:
 except FileNotFoundError:
     pass
 os.mkdir("sources")
-with zipfile.ZipFile(hytale_server_jar, 'r') as zip_ref:
-    zip_ref.extractall(classes)
+
+
+if not is_linux: # Handle license file and folder same name issue on Windows 
+    exclude_file = "LICENSE"
+    with zipfile.ZipFile(hytale_server_jar, 'r') as zip_ref:
+        zip_file_names = zip_ref.namelist()
+        for file_name in zip_file_names:
+            if file_name == exclude_file:
+                continue
+            zip_ref.extract(file_name, classes)
+else:
+    with zipfile.ZipFile(hytale_server_jar, 'r') as zip_ref:
+        zip_ref.extractall(classes)
+
 subprocess.run(["java", "-jar", fernflower_jar.absolute(), "-dgs=1", classes.absolute(), sources.absolute()], check=True)
 
 print("Cleaning up")
